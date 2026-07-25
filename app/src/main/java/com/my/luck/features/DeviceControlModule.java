@@ -23,10 +23,6 @@ public class DeviceControlModule {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
-    // ============================================
-    // 📶 WIFI CONTROL
-    // ============================================
-
     public boolean toggleWifi(boolean enable) {
         try {
             if (wifiManager != null) {
@@ -51,10 +47,6 @@ public class DeviceControlModule {
     public boolean disableWifi() {
         return toggleWifi(false);
     }
-
-    // ============================================
-    // 💡 FLASHLIGHT CONTROL
-    // ============================================
 
     public boolean toggleFlashlight(boolean enable) {
         try {
@@ -96,10 +88,6 @@ public class DeviceControlModule {
         return toggleFlashlight(false);
     }
 
-    // ============================================
-    // 🔵 BLUETOOTH CONTROL
-    // ============================================
-
     public boolean toggleBluetooth(boolean enable) {
         try {
             if (bluetoothAdapter != null) {
@@ -129,10 +117,6 @@ public class DeviceControlModule {
         return toggleBluetooth(false);
     }
 
-    // ============================================
-    // 📱 SCREEN CONTROL
-    // ============================================
-
     public void setScreenBrightness(int brightness) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -155,13 +139,8 @@ public class DeviceControlModule {
         }
     }
 
-    // ============================================
-    // 📶 MOBILE DATA CONTROL (requires root)
-    // ============================================
-
     public boolean toggleMobileData(boolean enable) {
         try {
-            // This requires root or system app privileges
             Process process = Runtime.getRuntime().exec(new String[]{
                 "su", "-c", 
                 "svc data " + (enable ? "enable" : "disable")
@@ -174,10 +153,6 @@ public class DeviceControlModule {
             return false;
         }
     }
-
-    // ============================================
-    // 📱 AIRPLANE MODE CONTROL
-    // ============================================
 
     public boolean toggleAirplaneMode(boolean enable) {
         try {
