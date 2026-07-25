@@ -10,11 +10,17 @@ public class ChessActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        chessBoard = new ChessBoard(this);
-        setContentView(chessBoard);
-        setTitle("Try Your Luck - Chess");
-
-        Toast.makeText(this, "♟️ Try Your Luck!", Toast.LENGTH_SHORT).show();
+        
+        try {
+            chessBoard = new ChessBoard(this);
+            setContentView(chessBoard);
+            setTitle("Try Your Luck - Chess");
+            Toast.makeText(this, "♟️ Try Your Luck!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error loading chess game", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     @Override
