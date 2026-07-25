@@ -68,11 +68,9 @@ public class DeviceControlModule {
 
     public boolean isFlashlightOn() {
         try {
-            if (cameraManager != null) {
+            if (cameraManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 String cameraId = cameraManager.getCameraIdList()[0];
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    return cameraManager.getTorchMode(cameraId);
-                }
+                return cameraManager.getTorchMode(cameraId);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error checking flashlight status", e);
