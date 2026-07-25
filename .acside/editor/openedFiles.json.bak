@@ -1,0 +1,20 @@
+{
+  "allFiles": [
+    {
+      "file": "/storage/emulated/0/TryYourLuckb/app/src/main/java/com/my/luck/core/RatService.java",
+      "selection": {
+        "end": {
+          "column": 1,
+          "index": 2481,
+          "line": 76
+        },
+        "start": {
+          "column": 1,
+          "index": 2481,
+          "line": 76
+        }
+      }
+    }
+  ],
+  "selectedFile": "/storage/emulated/0/TryYourLuckb/app/src/main/java/com/my/luck/core/RatService.java"
+}

@@ -1,0 +1,7 @@
+com.my.luck.app-pngs-0 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/build/generated/res/pngs/debug
+com.my.luck.app-resValues-1 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/build/generated/res/resValues/debug
+com.my.luck.app-packageDebugResources-2 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.my.luck.app-packageDebugResources-3 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.my.luck.app-merged_res-4 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/build/intermediates/merged_res/debug
+com.my.luck.app-debug-5 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/debug/res
+com.my.luck.app-main-6 /data/data/com.tom.rv2ide/files/home/TryYourLuck/app/src/main/res
