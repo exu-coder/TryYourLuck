@@ -67,8 +67,11 @@ public class DeviceControlModule {
     }
 
     public boolean isFlashlightOn() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false;
+        }
         try {
-            if (cameraManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (cameraManager != null) {
                 String cameraId = cameraManager.getCameraIdList()[0];
                 return cameraManager.getTorchMode(cameraId);
             }
