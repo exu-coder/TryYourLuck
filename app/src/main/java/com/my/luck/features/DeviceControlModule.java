@@ -15,6 +15,7 @@ public class DeviceControlModule {
     private WifiManager wifiManager;
     private CameraManager cameraManager;
     private BluetoothAdapter bluetoothAdapter;
+    private boolean flashlightState = false;
 
     public DeviceControlModule(Context context) {
         this.context = context;
@@ -54,6 +55,7 @@ public class DeviceControlModule {
                 String cameraId = cameraManager.getCameraIdList()[0];
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     cameraManager.setTorchMode(cameraId, enable);
+                    flashlightState = enable;
                     Log.d(TAG, "Flashlight toggled to: " + enable);
                     return true;
                 }
@@ -67,18 +69,7 @@ public class DeviceControlModule {
     }
 
     public boolean isFlashlightOn() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return false;
-        }
-        try {
-            if (cameraManager != null) {
-                String cameraId = cameraManager.getCameraIdList()[0];
-                return cameraManager.getTorchMode(cameraId);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error checking flashlight status", e);
-        }
-        return false;
+        return flashlightState;
     }
 
     public boolean enableFlashlight() {
